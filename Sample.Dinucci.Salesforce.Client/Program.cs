@@ -21,7 +21,7 @@ namespace Sample.Dinucci.Salesforce.Client
             using (var httpClient = new HttpClient())
             {
                 var authenticator =
-                    new Authenticator(ClientId, ClientSecret, Username, Password, AuthEndpoint, httpClient);
+                    new PasswordFlowAuthenticator(ClientId, ClientSecret, Username, Password, AuthEndpoint, httpClient);
 
                 var dataApi = new DataApi(authenticator, httpClient, 44);
                 var toolingApi = new ToolingApi(authenticator, httpClient, 44);

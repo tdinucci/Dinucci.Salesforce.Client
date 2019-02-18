@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Dinucci.Salesforce.Client.Auth
 {
-    public class Authenticator : IAuthenticator
+    public class PasswordFlowAuthenticator : IAuthenticator
     {
         private static readonly object AuthLock = new object();
 
@@ -18,7 +18,7 @@ namespace Dinucci.Salesforce.Client.Auth
 
         protected AuthInfo LastAuthInfo { get; private set; }
 
-        public Authenticator(string clientId, string clientSecret, string username, string password,
+        public PasswordFlowAuthenticator(string clientId, string clientSecret, string username, string password,
             string authServiceEndpoint, HttpClient httpClient)
         {
             if (string.IsNullOrWhiteSpace(clientId))

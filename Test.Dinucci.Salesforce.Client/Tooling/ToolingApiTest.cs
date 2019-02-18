@@ -19,7 +19,7 @@ namespace Test.Dinucci.Salesforce.Client.Tooling
         {
             _httpClient = new HttpClient();
 
-            var authenticator = new Authenticator(SalesforceConfig.ClientId, SalesforceConfig.ClientSecret,
+            var authenticator = new PasswordFlowAuthenticator(SalesforceConfig.ClientId, SalesforceConfig.ClientSecret,
                 SalesforceConfig.Username, SalesforceConfig.Password, SalesforceConfig.AuthEndpoint, _httpClient);
 
             _toolingApi = new ToolingApi(authenticator, _httpClient, 44);
