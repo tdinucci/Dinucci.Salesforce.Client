@@ -12,7 +12,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Dinucci.Salesforce.Client
 {
-    public class Api
+    public class Api : IApi
     {
         protected class ConnectionInfo
         {
@@ -33,7 +33,7 @@ namespace Dinucci.Salesforce.Client
 
         private const string MediaType = "application/json";
 
-        protected IAuthenticator Authenticator { get; }
+        public IAuthenticator Authenticator { get; }
         protected HttpClient HttpClient { get; }
 
         protected Api(IAuthenticator authenticator, HttpClient httpClient)

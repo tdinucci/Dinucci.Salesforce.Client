@@ -13,20 +13,27 @@ namespace Test.Dinucci.Salesforce.Client.Data
     {
         private readonly HttpClient _httpClient;
         private readonly IDataApi _api;
+        private readonly IAuthenticator _authenticator;
 
         public DataApiTest()
         {
             _httpClient = new HttpClient();
 
-            var authenticator = new PasswordFlowAuthenticator(SalesforceConfig.ClientId, SalesforceConfig.ClientSecret,
+            _authenticator = new PasswordFlowAuthenticator(SalesforceConfig.ClientId, SalesforceConfig.ClientSecret,
                 SalesforceConfig.Username, SalesforceConfig.Password, SalesforceConfig.AuthEndpoint, _httpClient);
 
-            _api = new DataApi(authenticator, _httpClient, 44);
+            _api = new DataApi(_authenticator, _httpClient, 44);
         }
 
         [Fact]
-        public async Task DescribeGood()
+        public void Authenticator()
         {
+            Assert.Equal(_authenticator, _api.Authenticator);
+        }
+        
+        [Fact]
+        public async Task DescribeGood()
+        {   
             var result = await _api.DescribeAsync("Contact").ConfigureAwait(false);
             Assert.True(result.ContainsKey("actionOverrides"));
             Assert.True(result.ContainsKey("childRelationships"));

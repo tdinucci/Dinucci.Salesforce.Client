@@ -10,19 +10,26 @@ using Xunit;
 
 namespace Test.Dinucci.Salesforce.Client.Custom
 {
-    public class CustomJsonApiTest : IDisposable
+    public class CustomApiTest : IDisposable
     {
         private readonly HttpClient _httpClient;
         private readonly ICustomApi _api;
+        private readonly IAuthenticator _authenticator;
 
-        public CustomJsonApiTest()
+        public CustomApiTest()
         {
             _httpClient = new HttpClient();
 
-            var authenticator = new PasswordFlowAuthenticator(SalesforceConfig.ClientId, SalesforceConfig.ClientSecret,
+            _authenticator = new PasswordFlowAuthenticator(SalesforceConfig.ClientId, SalesforceConfig.ClientSecret,
                 SalesforceConfig.Username, SalesforceConfig.Password, SalesforceConfig.AuthEndpoint, _httpClient);
-            
-            _api = new CustomApi(authenticator, _httpClient);
+
+            _api = new CustomApi(_authenticator, _httpClient);
+        }
+
+        [Fact]
+        public void Authenticator()
+        {
+            Assert.Equal(_authenticator, _api.Authenticator);
         }
 
         [Fact]

@@ -39,4 +39,4 @@ The implemented IAuthenticator (PasswordFlowAuthenticator) will automatically re
 ## NuGet
 The current NuGet package is:
 
-https://www.nuget.org/packages/Dinucci.Salesforce.Client/1.0.1
+https://www.nuget.org/packages/Dinucci.Salesforce.Client/1.0.2

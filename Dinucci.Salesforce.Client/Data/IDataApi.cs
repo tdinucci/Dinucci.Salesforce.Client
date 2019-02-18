@@ -1,9 +1,10 @@
 using System.Threading.Tasks;
+using Dinucci.Salesforce.Client.Auth;
 using Newtonsoft.Json.Linq;
 
 namespace Dinucci.Salesforce.Client.Data
 {
-    public interface IDataApi
+    public interface IDataApi : IApi
     {
         Task<JObject> DescribeAsync(string typeName);
 

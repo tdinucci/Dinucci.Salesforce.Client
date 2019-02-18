@@ -12,18 +12,25 @@ namespace Test.Dinucci.Salesforce.Client.Tooling
     public class ToolingApiTest : IDisposable
     {
         private readonly HttpClient _httpClient;
-        private readonly IToolingApi _toolingApi;
         private readonly IDataApi _dataApi;
+        private readonly IToolingApi _toolingApi;
+        private readonly IAuthenticator _authenticator;
 
         public ToolingApiTest()
         {
             _httpClient = new HttpClient();
 
-            var authenticator = new PasswordFlowAuthenticator(SalesforceConfig.ClientId, SalesforceConfig.ClientSecret,
+            _authenticator = new PasswordFlowAuthenticator(SalesforceConfig.ClientId, SalesforceConfig.ClientSecret,
                 SalesforceConfig.Username, SalesforceConfig.Password, SalesforceConfig.AuthEndpoint, _httpClient);
 
-            _toolingApi = new ToolingApi(authenticator, _httpClient, 44);
-            _dataApi = new DataApi(authenticator, _httpClient, 44);
+            _dataApi = new DataApi(_authenticator, _httpClient, 44);
+            _toolingApi = new ToolingApi(_authenticator, _httpClient, 44);
+        }
+
+        [Fact]
+        public void Authenticator()
+        {
+            Assert.Equal(_authenticator, _toolingApi.Authenticator);
         }
 
         [Fact]

@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Dinucci.Salesforce.Client.Custom
 {
-    public interface ICustomApi
+    public interface ICustomApi : IApi
     {
         Task<string> GetAsync(string servicePath, IDictionary<string, string> parameters = null);
         Task<string> PostAsync(string servicePath, JObject jObject);
