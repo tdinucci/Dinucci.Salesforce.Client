@@ -2,6 +2,11 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <Authors>Tony Di Nucci</Authors>
+        <AssemblyTitle>Dinucci.Salesforce.Client</AssemblyTitle>
+        <Description>A general client for the assorted Salesforce API's</Description>
+        <Copyright>Tony Di Nucci 2019</Copyright>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
 
     <ItemGroup>

@@ -20,8 +20,7 @@ namespace Test.Dinucci.Salesforce.Client.Custom
             _httpClient = new HttpClient();
 
             var authenticator = new Authenticator(SalesforceConfig.ClientId, SalesforceConfig.ClientSecret,
-                SalesforceConfig.Username, SalesforceConfig.Password, SalesforceConfig.AuthEndpoint, TimeSpan.Zero,
-                _httpClient);
+                SalesforceConfig.Username, SalesforceConfig.Password, SalesforceConfig.AuthEndpoint, _httpClient);
             
             _api = new CustomApi(authenticator, _httpClient);
         }

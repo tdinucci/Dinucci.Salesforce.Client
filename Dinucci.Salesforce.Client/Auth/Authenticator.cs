@@ -14,13 +14,12 @@ namespace Dinucci.Salesforce.Client.Auth
         protected string Username { get; }
         protected string Password { get; }
         protected string AuthServiceEndpoint { get; }
-        public TimeSpan ReauthenticateFrequency { get; }
         protected HttpClient HttpClient { get; }
 
         protected AuthInfo LastAuthInfo { get; private set; }
 
         public Authenticator(string clientId, string clientSecret, string username, string password,
-            string authServiceEndpoint, TimeSpan reauthenticateFrequency, HttpClient httpClient)
+            string authServiceEndpoint, HttpClient httpClient)
         {
             if (string.IsNullOrWhiteSpace(clientId))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(clientId));
@@ -40,7 +39,6 @@ namespace Dinucci.Salesforce.Client.Auth
             Username = username;
             Password = password;
             AuthServiceEndpoint = authServiceEndpoint;
-            ReauthenticateFrequency = reauthenticateFrequency;
             HttpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
 
@@ -90,17 +88,10 @@ namespace Dinucci.Salesforce.Client.Auth
 
         public IAuthInfo GetAuthInfo()
         {
-            if (IsAuthRequired())
+            if (LastAuthInfo == null)
                 Authenticate();
 
             return LastAuthInfo;
-        }
-
-        protected virtual bool IsAuthRequired()
-        {
-            return LastAuthInfo == null || ReauthenticateFrequency == TimeSpan.Zero ||
-                   (ReauthenticateFrequency < TimeSpan.MaxValue &&
-                    LastAuthInfo.IssuedAt < DateTime.Now.Subtract(ReauthenticateFrequency));
         }
     }
 }

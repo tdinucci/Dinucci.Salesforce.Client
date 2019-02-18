@@ -18,8 +18,7 @@ namespace Test.Dinucci.Salesforce.Client.Auth
         public void GoodLogin()
         {
             var authenticator = new Authenticator(SalesforceConfig.ClientId, SalesforceConfig.ClientSecret,
-                SalesforceConfig.Username, SalesforceConfig.Password, SalesforceConfig.AuthEndpoint, TimeSpan.Zero,
-                _httpClient);
+                SalesforceConfig.Username, SalesforceConfig.Password, SalesforceConfig.AuthEndpoint, _httpClient);
 
             var authResult = authenticator.GetAuthInfo();
 
@@ -32,8 +31,7 @@ namespace Test.Dinucci.Salesforce.Client.Auth
         public void BadClientId()
         {
             var authenticator = new Authenticator("x", SalesforceConfig.ClientSecret,
-                SalesforceConfig.Username, SalesforceConfig.Password, SalesforceConfig.AuthEndpoint, TimeSpan.Zero,
-                _httpClient);
+                SalesforceConfig.Username, SalesforceConfig.Password, SalesforceConfig.AuthEndpoint, _httpClient);
 
             var ex = Assert.Throws<AuthenticationException>(() => authenticator.GetAuthInfo());
 
@@ -44,8 +42,7 @@ namespace Test.Dinucci.Salesforce.Client.Auth
         public void BadClientSecret()
         {
             var authenticator = new Authenticator(SalesforceConfig.ClientId, "x",
-                SalesforceConfig.Username, SalesforceConfig.Password, SalesforceConfig.AuthEndpoint, TimeSpan.Zero,
-                _httpClient);
+                SalesforceConfig.Username, SalesforceConfig.Password, SalesforceConfig.AuthEndpoint, _httpClient);
 
             var ex = Assert.Throws<AuthenticationException>(() => authenticator.GetAuthInfo());
 
@@ -56,8 +53,7 @@ namespace Test.Dinucci.Salesforce.Client.Auth
         public void BadUsername()
         {
             var authenticator = new Authenticator(SalesforceConfig.ClientId, SalesforceConfig.ClientSecret,
-                "x", SalesforceConfig.Password, SalesforceConfig.AuthEndpoint, TimeSpan.Zero,
-                _httpClient);
+                "x", SalesforceConfig.Password, SalesforceConfig.AuthEndpoint, _httpClient);
 
             var ex = Assert.Throws<AuthenticationException>(() => authenticator.GetAuthInfo());
 
@@ -68,8 +64,7 @@ namespace Test.Dinucci.Salesforce.Client.Auth
         public void BadPassword()
         {
             var authenticator = new Authenticator(SalesforceConfig.ClientId, SalesforceConfig.ClientSecret,
-                SalesforceConfig.Username, "x", SalesforceConfig.AuthEndpoint, TimeSpan.Zero,
-                _httpClient);
+                SalesforceConfig.Username, "x", SalesforceConfig.AuthEndpoint, _httpClient);
 
             var ex = Assert.Throws<AuthenticationException>(() => authenticator.GetAuthInfo());
 
@@ -81,7 +76,7 @@ namespace Test.Dinucci.Salesforce.Client.Auth
         {
             var authenticator = new Authenticator(SalesforceConfig.ClientId, SalesforceConfig.ClientSecret,
                 SalesforceConfig.Username, SalesforceConfig.Password, SalesforceConfig.AuthEndpoint + "x",
-                TimeSpan.Zero, _httpClient);
+                _httpClient);
 
             var ex = Assert.Throws<AuthenticationException>(() => authenticator.GetAuthInfo());
 
