@@ -107,6 +107,34 @@ namespace Test.Dinucci.Salesforce.Client.Data
         }
 
         [Fact]
+        public async Task SelectAllFields()
+        {
+            var firstName = Guid.NewGuid().ToString();
+            var lastName = Guid.NewGuid().ToString();
+            var postalCode = DateTime.Now.Millisecond.ToString();
+            var contact = new JObject
+            {
+                {"Salutation", "Mr"},
+                {"FirstName", firstName},
+                {"LastName", lastName},
+                {"MailingPostalCode", postalCode},
+                {"MailingCountry", "United Kingdom"}
+            };
+
+            var id = await _api.CreateAsync("Contact", contact).ConfigureAwait(false);
+            Assert.False(string.IsNullOrWhiteSpace(id));
+
+            var jobj = await _api.SelectAllFieldsAsync("Contact", id).ConfigureAwait(false);
+
+            Assert.Equal(firstName, jobj["FirstName"].Value<string>());
+            Assert.Equal(lastName, jobj["LastName"].Value<string>());
+            Assert.NotNull(jobj["RecordTypeId"].Value<string>());
+            Assert.NotNull(jobj["CreatedDate"].Value<string>());
+            Assert.NotNull(jobj["PhotoUrl"].Value<string>());
+            Assert.NotNull(jobj["Disclaimer_Text__c"].Value<string>());
+        }
+
+        [Fact]
         public async Task CreateGood()
         {
             var firstName = Guid.NewGuid().ToString();

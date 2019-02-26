@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Dinucci.Salesforce.Client.Auth;
@@ -87,6 +88,24 @@ namespace Dinucci.Salesforce.Client.Data
                 .ConfigureAwait(false);
 
             return ReadResult<JObject>.Parse(JObject.Parse(response));
+        }
+
+        public async Task<JObject> SelectAllFieldsAsync(string typeName, string id)
+        {
+            var describeResult = await DescribeAsync(typeName).ConfigureAwait(false);
+
+            if (!describeResult.ContainsKey("fields"))
+                throw new InvalidOperationException("Expected describe result to contains some fields");
+
+            var fieldNames = describeResult["fields"].Select(field => field["name"].Value<string>()).ToArray();
+
+            var query = $"SELECT {fieldNames.Aggregate((c, n) => $"{c},{n}")} FROM {typeName} WHERE Id = '{id}'";
+            var result = await QueryAsync(query).ConfigureAwait(false);
+
+            if (result?.Records.Length != 1)
+                throw new InvalidOperationException($"Could not retrieve '{typeName}' '{id}'");
+
+            return result.Records[0];
         }
 
         public async Task<string> CreateAsync(string typeName, JObject jobj)
