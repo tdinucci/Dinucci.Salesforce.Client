@@ -10,10 +10,12 @@ namespace Dinucci.Salesforce.Client.Data
 
         Task<ReadResult<JObject>> QueryAsync(string soql);
 
+        Task<JObject> QuerySingleAsync(string soql);
+
         Task<ReadResult<JObject>> GetNextAsync(string nextRecordsUrlSuffix);
 
         Task<JObject> SelectAllFieldsAsync(string typeName, string id);
-        
+
         Task<string> CreateAsync(string typeName, JObject jobj);
 
         Task UpdateAsync(string typeName, string id, JObject jobj);

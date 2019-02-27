@@ -75,6 +75,21 @@ namespace Dinucci.Salesforce.Client.Data
             return ReadResult<JObject>.Parse(JObject.Parse(response));
         }
 
+        public async Task<JObject> QuerySingleAsync(string soql)
+        {
+            var result = await QueryAsync(soql).ConfigureAwait(false);
+            if (!result.Done)
+                throw new InvalidOperationException($"Query failed: {soql}");
+
+            if (result.Records.Length != 1)
+            {
+                throw new InvalidOperationException(
+                    $"Expected to receive 1 record but received {result.Records.Length} with query {soql}");
+            }
+
+            return result.Records[0];
+        }
+
         public async Task<ReadResult<JObject>> GetNextAsync(string nextRecordsUrlSuffix)
         {
             if (string.IsNullOrWhiteSpace(nextRecordsUrlSuffix))
