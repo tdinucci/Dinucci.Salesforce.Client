@@ -6,6 +6,8 @@ namespace Dinucci.Salesforce.Client.Data
 {
     public interface IDataApi : IApi
     {
+        Task<JObject> GetAsync(string servicePath);
+        
         Task<JObject> DescribeAsync(string typeName);
 
         Task<ReadResult<JObject>> QueryAsync(string soql);

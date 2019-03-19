@@ -52,6 +52,15 @@ namespace Dinucci.Salesforce.Client.Data
             }
         }
 
+        public async Task<JObject> GetAsync(string servicePath)
+        {
+            if (string.IsNullOrWhiteSpace(servicePath))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(servicePath));
+
+            var response = await SendRequestAsync(HttpMethod.Get, servicePath, null).ConfigureAwait(false);
+            return JObject.Parse(response);
+        }
+
         public async Task<JObject> DescribeAsync(string typeName)
         {
             if (string.IsNullOrWhiteSpace(typeName))

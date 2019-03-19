@@ -40,6 +40,14 @@ namespace Test.Dinucci.Salesforce.Client.Data
         }
 
         [Fact]
+        public async Task Get()
+        {
+            var result = await _api.GetAsync("limits/recordCount?sObjects=Contact").ConfigureAwait(false);
+            var count = result["sObjects"].First["count"].Value<int>();
+            Assert.True(count > 0);
+        }
+        
+        [Fact]
         public async Task DescribeInvalidType()
         {
             var ex = await Assert.ThrowsAsync<SalesforceDataException>(() => _api.DescribeAsync("xContact"))
