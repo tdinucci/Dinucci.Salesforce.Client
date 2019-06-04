@@ -68,6 +68,35 @@ namespace Test.Dinucci.Salesforce.Client.Data
             Assert.Null(result.NextRecordsUrl);
             EnsureValidRecords(result.Records, new[] {"Id", "FirstName", "LastName"});
         }
+        
+        [Fact]
+        public async Task QueryWithSpecialChar()
+        {
+            var firstName = Guid.NewGuid().ToString();
+            var lastName = Guid.NewGuid().ToString();
+            var postalCode = DateTime.Now.Millisecond.ToString();
+            var email = $"someone+{Guid.NewGuid()}@abc.xom";
+            var contact = new JObject
+            {
+                {"Salutation", "Mr"},
+                {"FirstName", firstName},
+                {"LastName", lastName},
+                {"MailingPostalCode", postalCode},
+                {"MailingCountry", "United Kingdom"},
+                {"Email", email}
+            };
+
+            await _api.CreateAsync("Contact", contact).ConfigureAwait(false);
+            
+            var query = $"SELECT Id, FirstName, LastName FROM Contact WHERE Email = '{email}' LIMIT 1";
+            var result = await _api.QueryAsync(query).ConfigureAwait(false);
+
+            Assert.True(result.Done);
+            Assert.True(result.TotalSize == 1);
+            Assert.Equal(result.TotalSize, result.Records.Length);
+            Assert.Null(result.NextRecordsUrl);
+            EnsureValidRecords(result.Records, new[] {"Id", "FirstName", "LastName"});
+        }
 
         [Fact]
         public async Task QueryGoodWithNext()

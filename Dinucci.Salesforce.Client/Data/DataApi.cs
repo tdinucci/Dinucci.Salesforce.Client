@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using Dinucci.Salesforce.Client.Auth;
 using Newtonsoft.Json.Linq;
 
@@ -78,7 +79,7 @@ namespace Dinucci.Salesforce.Client.Data
             if (string.IsNullOrWhiteSpace(soql))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(soql));
 
-            var response = await SendRequestAsync(HttpMethod.Get, $"query?q={soql}", null)
+            var response = await SendRequestAsync(HttpMethod.Get, $"query?q={HttpUtility.UrlEncode(soql)}", null)
                 .ConfigureAwait(false);
 
             return ReadResult<JObject>.Parse(JObject.Parse(response));
